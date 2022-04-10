@@ -125,7 +125,34 @@ LIBMYPAINT_SOURCES = \
 	rng-double.c					\
 	tilemap.c
 
+LIBRUSTICPAINT_SRC = \
+	Cargo.toml						\
+	src/lib.rs
+
+LIBRUSTICPAINT_EXTRAS = \
+	Cargo.lock
+
+if DEBUG_RELEASE
+CARGO_RELEASE_ARGS=
+else
+CARGO_RELEASE_ARGS=--release
+endif
+
+RUSTICPAINT_LIB=@abs_top_builddir@/target/@RUST_TARGET_SUBDIR@/librusticpaint.a
+
+check-local:
+	cd $(srcdir) && CARGO_TARGET_DIR=@abs_top_builddir@/target cargo test
+
+clean-local:
+	cd $(top_srcdir) && CARGO_TARGET_DIR=@abs_top_builddir@/target cargo clean
+
+@abs_top_builddir@/target/@RUST_TARGET_SUBDIR@/librusticpaint.a: $(LIBRUSTICPAINT_SRC)
+	cd $(top_srcdir) && \
+	CARGO_TARGET_DIR=@abs_top_builddir@/target cargo build --verbose $(CARGO_RELEASE_ARGS)
+
 libmypaint_@LIBMYPAINT_API_PLATFORM_VERSION@_la_SOURCES = $(libmypaint_public_HEADERS) $(LIBMYPAINT_SOURCES)
+
+libmypaint_@LIBMYPAINT_API_PLATFORM_VERSION@_la_LIBADD = $(RUSTICPAINT_LIB)
 
 DISTCLEANFILES = MyPaint-@LIBMYPAINT_API_PLATFORM_VERSION@.gir.files
 
@@ -145,7 +172,9 @@ EXTRA_DIST = \
 	rng-double.h					\
 	tiled-surface-private.h			\
 	tilemap.h						\
-	glib/mypaint-brush.c
+	glib/mypaint-brush.c			\
+	$(LIBRUSTICPAINT_SRC)			\
+	$(LIBRUSTICPAINT_EXTRAS)	
 
 if HAVE_I18N
 PODIRS = po
