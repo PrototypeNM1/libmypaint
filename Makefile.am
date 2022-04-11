@@ -44,7 +44,6 @@ introspection_sources = \
 	$(MyPaint_introspectable_headers)	\
 	brushmodes.c					\
 	mypaint-brush-settings.c		\
-	mypaint-rectangle.c				\
 	operationqueue.c				\
 	fifo.c							\
 	mypaint-mapping.c				\
@@ -118,7 +117,6 @@ LIBMYPAINT_SOURCES = \
 	mypaint-fixed-tiled-surface.c	\
 	mypaint-matrix.c	\
 	mypaint-symmetry.c	\
-	mypaint-rectangle.c				\
 	mypaint-surface.c				\
 	mypaint-tiled-surface.c			\
 	operationqueue.c				\
@@ -127,7 +125,8 @@ LIBMYPAINT_SOURCES = \
 
 LIBRUSTICPAINT_SRC = \
 	Cargo.toml						\
-	src/lib.rs
+	src/lib.rs						\
+	src/rectangle.rs
 
 LIBRUSTICPAINT_EXTRAS = \
 	Cargo.lock
